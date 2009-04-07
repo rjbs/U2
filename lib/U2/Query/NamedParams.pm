@@ -5,7 +5,8 @@ package U2::Query::NamedParams;
 use Scalar::Util ();
 
 sub new {
-  my ($class, $struct) = @_;
+  my ($class, $struct, $arg) = @_;
+  $arg ||= {};
   
   if (Scalar::Util::reftype($struct) eq 'HASH') {
     my @new;
@@ -18,12 +19,15 @@ sub new {
     # XXX: assume it's okay for now -- rjbs, 2009-04-06
   }
 
-  bless { pairs => $struct } => $class;
+  bless {
+    pairs => $struct,
+    delim => ($arg->{delim} || q{;}),
+  } => $class;
 }
 
 sub as_string {
   my ($self) = @_;
-  join q{;}, map {; "$_->[0]=$_->[1]" } @{ $self->{pairs} };
+  join $self->{delim}, map {; "$_->[0]=$_->[1]" } @{ $self->{pairs} };
 }
 
 1;
