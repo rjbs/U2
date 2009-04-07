@@ -28,7 +28,11 @@ my @tests = (
         port     => '8080',
       },
       path      => [ qw(~rjbs rfc 3986) ],
-      query     => { format => 'text', sec => [ 1, 2 ] },
+      query     => [ 
+        [ format => 'text'  ],
+        [ sec    => 1       ],
+        [ sec    => 2       ],
+      ],
       fragment  => 'foo'
     },
   ],
