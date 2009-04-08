@@ -8,31 +8,37 @@ use Scalar::Util ();
 use U2::Query::NamedParams;
 
 sub from_struct {
-  my ($self, $s) = @_;
+  my ($class, $s) = @_;
+
+  bless $s => $class;
+}
+
+sub as_string {
+  my ($self) = @_;
 
   my $query;
-  if (defined $s->{query}) {
-    $query = Scalar::Util::blessed($s->{query})
-           ? $s->{query}
-           : U2::Query::NamedParams->new($s->{query});
+  if (defined $self->{query}) {
+    $query = Scalar::Util::blessed($self->{query})
+           ? $self->{query}
+           : U2::Query::NamedParams->new($self->{query});
   }
 
   sprintf '%s:%s%s%s%s',
-    $s->{scheme},
-    ($s->{authority}
+    $self->{scheme},
+    ($self->{authority}
       ? sprintf(
           '//%s%s',
-          $s->{authority}{hostname},
-          (defined $s->{authority}{port} ? ":$s->{authority}{port}" : '')
+          $self->{authority}{hostname},
+          (defined $self->{authority}{port} ? ":$self->{authority}{port}" : '')
         )
       : ''
     ),
-    ($s->{path}
-      ? (($s->{relative} ? '' : '/') . join('/', @{ $s->{path} }))
+    ($self->{path}
+      ? (($self->{relative} ? '' : '/') . join('/', @{ $self->{path} }))
       : ''
     ),
     (defined $query ? ('?' . $query->as_string) : ''),
-    (defined $s->{fragment} ? "#$s->{fragment}" : '');
+    (defined $self->{fragment} ? "#$self->{fragment}" : '');
 }
 
 1;

@@ -7,15 +7,15 @@ use U2::Query::NamedParams;
 use U2::Query::Keywords;
 
 sub uri_is {
-  my ($uri, $struct) = @_;
+  my ($str, $struct) = @_;
 
   if ($struct) {
-    my $str = U2->from_struct($struct);
-    is($str, $uri, "produced $uri");
+    my $uri = U2->from_struct($struct);
+    is($uri->as_string, $str, "produced $str");
   } else {
     TODO: {
       local $TODO = "not yet implemented";
-      fail("produced $uri");
+      fail("produced $str");
     }
   }
 }
