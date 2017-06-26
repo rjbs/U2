@@ -1,0 +1,16 @@
+use strict;
+use warnings;
+use lib 'lib';
+use U2;
+
+U2->from_string(
+  'http://example.com:8080/~rjbs/rfc/3986?format=text;sec=1;sec=2#foo',
+);
+
+U2->from_string(
+  'http://example.com/~rjbs',
+);
+
+U2->from_string(
+  'tag:codesimply.com,2008:rx/core/int',
+);
